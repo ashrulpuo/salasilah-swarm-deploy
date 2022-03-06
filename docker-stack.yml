@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   app:
-    image: ashrul/salasilah
+    image: ashrul/salasilah:0.1
     # volumes: 
     #   - "app-storage:/var/www"
     networks:
