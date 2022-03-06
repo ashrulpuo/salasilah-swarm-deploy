@@ -1,0 +1,57 @@
+version: "3.7"
+
+services:
+  app:
+    image: ashrul/salasilah
+    # volumes: 
+    #   - "app-storage:/var/www"
+    networks:
+      - laravel-net
+    deploy:
+      mode: 'replicated'
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+  dbs:
+    image: mysql:5.7.22
+    configs:
+      - source: mysql-config
+        target: /etc/mysql/my.cnf
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssw0rd
+      MYSQL_USER: salasilah
+      MYSQL_DATABASE: salasilah
+      MYSQL_PASSWORD: P@ssw0rd
+    ports:
+      - "3306:3306"
+    # volumes: 
+    #   - "dbs-storage:/var/lib/mysql"
+    networks:
+      - laravel-net
+    deploy:
+      mode: 'replicated'
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+
+networks:
+  laravel-net:
+    driver: overlay
+
+configs:
+  mysql-config:
+    name: mysql-config
+    file: ./configs/my.cnf
