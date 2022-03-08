@@ -23,7 +23,7 @@ services:
       placement:
          constraints: [node.role == manager]
     networks:
-      - net
+      - laravel-net
 
 # networks:
 #     net:
