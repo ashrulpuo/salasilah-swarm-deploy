@@ -20,11 +20,6 @@ services:
         order: stop-first
       restart_policy:
         condition: on-failure
-      labels:
-        - "traefik.docker.network=net"
-        - "traefik.port=80"
-        - "traefik.frontend.rule=PathPrefix:/"
-        - "traefik.backend.loadbalancer.sticky=true"
   dbs:
     image: mysql:5.7.22
     configs:
